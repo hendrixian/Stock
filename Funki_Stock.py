@@ -11,6 +11,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 
+
 # Fetch stock data
 def get_stock_data(ticker, start, end):
     stock = yf.download(ticker, start=start, end=end)
