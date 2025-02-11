@@ -90,6 +90,7 @@ def predict_future_with_svd(df, future_days=30):
         future_components = model.predict(future_dates_ordinal.values.reshape(-1, 1))
         predictions.append(future_components)
         print("testing....")
+        print("test 2.....")
     # Reconstruct future prices from predicted components
     predicted_matrix = svd.inverse_transform(np.column_stack(predictions))
     future_df = pd.DataFrame(
@@ -218,8 +219,6 @@ def analyze_stock(ticker):
         plt.savefig(f'static/{ticker}_full_data.png')
 
         plt.close()
-
-        print("Done")
 
         return ticker
 
