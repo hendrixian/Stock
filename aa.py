@@ -11,11 +11,17 @@ import yfinance as yf
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
+from datetime import datetime
 
-# Fetch Stock Data
-def fetch_stock_data(stock_symbol, start_date, end_date):
-    stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
-    return stock_data
+# Fetch stock data with month/day/year format
+def get_stock_data(ticker, start, end):
+    # Convert string dates from month/day/year format to datetime objects
+    start_date = datetime.strptime(start, '%m/%d/%Y')  # Using / instead of .
+    end_date = datetime.strptime(end, '%m/%d/%Y')  # Using / instead of .
+    
+    stock = yf.download(ticker, start=start_date, end=end_date)
+    return stock[['Close']]
+
 
 # Prepare Data for LSTM Model
 def prepare_data(stock_data, time_step=60):
@@ -44,8 +50,8 @@ def create_lstm_model(input_shape):
     return model
 
 # Predict Future Stock Prices
-def predict_stock_price(model, scaler, test_data, time_step=60):
-    test_input = scaler.transform(test_data[['Close']].values)
+def predict_stock_price(model, scaler, stock_data, time_step=60):
+    test_input = scaler.transform(stock_data[['Close']].values)
     X_test = []
     for i in range(time_step, len(test_input)):
         X_test.append(test_input[i-time_step:i, 0])
@@ -64,7 +70,7 @@ def run_prediction():
         return
     
     try:
-        stock_data = fetch_stock_data(stock_symbol, start_date, end_date)
+        stock_data = get_stock_data(stock_symbol, start_date, end_date)
         X, y, scaler = prepare_data(stock_data)
         
         model = create_lstm_model((X.shape[1], 1))
@@ -93,11 +99,13 @@ stock_entry = tk.Entry(root)
 stock_entry.pack(pady=5)
 
 tk.Label(root, text="Start Date:").pack(pady=5)
-start_date_entry = DateEntry(root, width=12, background='darkblue', foreground='white', borderwidth=2)
+# Set the date format to show full year (yyyy)
+start_date_entry = DateEntry(root, width=12, background='darkblue', foreground='white', borderwidth=2, date_pattern='mm/dd/yyyy')
 start_date_entry.pack(pady=5)
 
 tk.Label(root, text="End Date:").pack(pady=5)
-end_date_entry = DateEntry(root, width=12, background='darkblue', foreground='white', borderwidth=2)
+# Set the date format to show full year (yyyy)
+end_date_entry = DateEntry(root, width=12, background='darkblue', foreground='white', borderwidth=2, date_pattern='mm/dd/yyyy')
 end_date_entry.pack(pady=5)
 
 tk.Button(root, text="Predict", command=run_prediction).pack(pady=20)
