@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Analysis</h1>
+        <form method="POST">
+            <label for="ticker">Enter Stock Ticker:</label>
+            <input type="text" id="ticker" name="ticker" required>
+            <button type="submit">Analyze</button>
+        </form>
+        {% if error_message %}
+            <div class="error">{{ error_message }}</div>
+        {% endif %}
+        {% if ticker %}
+            <div class="result">
+                <h2>Analysis Result for {{ ticker }}</h2>
+                <div class="graph-section">
+                    <h3>Actual vs Predicted Close Price</h3>
+                    <img src="{{ url_for('static', filename=ticker + '_actual_vs_predicted.png') }}" alt="Actual vs Predicted Close Price">
+                </div>
+                <div class="graph-section">
+                    <h3>Trend and Forecast</h3>
+                    <img src="{{ url_for('static', filename=ticker + '_trend_forecast.png') }}" alt="Trend and Forecast">
+                </div>
+                <div class="graph-section">
+                    <h3>Residuals (Errors)</h3>
+                    <img src="{{ url_for('static', filename=ticker + '_residuals.png') }}" alt="Residuals (Errors)">
+                </div>
+                <div class="graph-section">
+                    <h3>Full Data (Including Future Predictions)</h3>
+                    <img src="{{ url_for('static', filename=ticker + '_full_data.png') }}" alt="Full Data (Including Future Predictions)">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
