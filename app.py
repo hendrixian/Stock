@@ -219,6 +219,8 @@ def analyze_stock(ticker):
 
         plt.close()
 
+        print("Done")
+
         return ticker
 
     except Exception as e:
