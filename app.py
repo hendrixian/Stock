@@ -89,7 +89,7 @@ def predict_future_with_svd(df, future_days=30):
         # Predict future components
         future_components = model.predict(future_dates_ordinal.values.reshape(-1, 1))
         predictions.append(future_components)
-
+        print("testing....")
     # Reconstruct future prices from predicted components
     predicted_matrix = svd.inverse_transform(np.column_stack(predictions))
     future_df = pd.DataFrame(
