@@ -14,6 +14,7 @@ from tkcalendar import DateEntry
 from datetime import datetime
 
 # Fetch stock data with month/day/year format
+print("hello world")
 def get_stock_data(ticker, start, end):
     # Convert string dates from month/day/year format to datetime objects
     start_date = datetime.strptime(start, '%m/%d/%Y')  # Using / instead of .
