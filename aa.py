@@ -112,3 +112,4 @@ end_date_entry.pack(pady=5)
 tk.Button(root, text="Predict", command=run_prediction).pack(pady=20)
 
 root.mainloop()
+print("mkm")
